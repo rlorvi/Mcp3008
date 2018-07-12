@@ -1,0 +1,40 @@
+#include <wiringPi.h>
+#include <mcp3004.h> // it's the same library for mcp3008
+#include <stdio.h>
+#include <stdlib.h>
+
+#define BASE 100
+#define SPI_CHAN 0
+
+int main (void) {
+    int chan;
+    int x;
+    int y;
+    float tacho;
+    float posicion;
+    
+    printf("Lectura de la posicion y velocidad del servomotor\n");
+    
+    if(wiringPiSetup() == -1)
+        exit(1);
+        
+    mcp3004Setup(BASE, SPI_CHAN);
+    chan 0;
+    
+    for(;;) {
+        x = analogRead(BASE + chan);
+        if(x == 0)
+            x = analogRead(BASE + chan + 2);
+            
+        tacho = x + (5.0 / 1024);
+        y = analogRead(BASE + chan + 1);
+        posicion = y * (5.0 / 1024);
+        printf("%f\n", tacho);
+        printf("%f\n", posicion);
+        delay(1000);
+    }
+    
+    return 0;
+
+}
+      
